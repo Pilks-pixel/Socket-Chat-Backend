@@ -18,3 +18,13 @@ Accept: application/json
 }
 
 ###
+
+POST {{host}}/api/auth/login HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "userName": "pp48",
+    "email": "p@gmail.com",
+    "password": "passwordexample"
+}

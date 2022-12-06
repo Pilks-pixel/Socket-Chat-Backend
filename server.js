@@ -48,8 +48,8 @@ app.get('/', (req,res) => {
     res.status(200).send('Hello World')
 })
 
-const registerRouting = require('./routes/userRoutes')
-app.use('/api/auth/register', registerRouting)
+const userRouting = require('./routes/userRoutes')
+app.use('/api/auth/', userRouting)
 
 
 // DB connection 

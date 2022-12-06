@@ -32,12 +32,33 @@ async function register(req, res, next) {
         next(err);
     }; 
     
-
-    
-
-    
-    
 };
+
+async function login(req, res, next) {
+    try {
+    // console.log(req.body);
+    const {username, email, password} = req.body;
+    const userQuery = await User.findOne({username})
+    
+    if (!userQuery) {
+        return res.json({msg: "user does not exist", status: false})
+
+    }
+
+    const authed = await bcrypt.compare(password, userQuery.password)
+
+    if (authed) {
+        // console.log(userQuery, authed)
+        return res.status(200).json({msg: "user found", status: true})
+    } else {
+        return res.json({msg: "incorrect password for this user", status: false})
+    }
+        
+    } catch(err) {
+        next(err);
+    }
+    
+}
 
 function hello(req, res, next) {
     res.status(200).send('register route')
@@ -45,4 +66,4 @@ function hello(req, res, next) {
 } 
 
 
-module.exports = {register, hello}
+module.exports = {register, hello, login}
