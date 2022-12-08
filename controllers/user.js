@@ -26,7 +26,7 @@ async function register(req, res, next) {
         password:hashedPassword
     });
     delete user.password;
-    return res.json({status: true, user}) 
+    return res.status(201).json({status: true, user}) 
 
     } catch(err) {
         next(err);
@@ -37,7 +37,7 @@ async function register(req, res, next) {
 async function login(req, res, next) {
     try {
     // console.log(req.body);
-    const {username, email, password} = req.body;
+    const {username, password} = req.body;
     const userQuery = await User.findOne({username})
     
     if (!userQuery) {
@@ -46,10 +46,12 @@ async function login(req, res, next) {
     }
 
     const authed = await bcrypt.compare(password, userQuery.password)
+    // console.log(authed, userQuery);
 
     if (authed) {
-        // console.log(userQuery, authed)
-        return res.status(200).json({msg: "user found", status: true})
+        let user = userQuery.toObject()
+        delete user.password;
+        return res.status(200).json({msg: "user found", status: true, user})
     } else {
         return res.json({msg: "incorrect password for this user", status: false})
     }

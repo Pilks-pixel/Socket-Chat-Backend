@@ -12,7 +12,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "userName": "pete",
+    "username": "pete",
     "email": "test@gmail.com",
     "password": "passwordexample"
 }
@@ -24,7 +24,6 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "userName": "pp48",
-    "email": "p@gmail.com",
-    "password": "passwordexample"
+    "username": "pp48",
+    "password": "12345"
 }

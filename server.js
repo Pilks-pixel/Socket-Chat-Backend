@@ -59,7 +59,7 @@ mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology: true,
 
 }).then(() => {
-    console.log('DB connection ');
+    console.log('DB connection');
 }).catch((err) => {
     console.log(err.message);
 });
