@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const user = require('../models/user');
 const saltRounds = 10;
 
@@ -51,7 +52,11 @@ async function login(req, res, next) {
     if (authed) {
         let user = userQuery.toObject()
         delete user.password;
-        return res.status(200).json({msg: "user found", status: true, user})
+        const payload = { username: user.username, email: user.email }
+
+        const accessToken = jwt.sign(payload, process.env.SECRET_KEY);
+        return res.status(200).json({accessToken: accessToken, msg: "user found", status: true})
+        // return res.status(200).json({msg: "user found", status: true, user})
     } else {
         return res.json({msg: "incorrect password for this user", status: false})
     }
@@ -62,10 +67,36 @@ async function login(req, res, next) {
     
 }
 
-function hello(req, res, next) {
-    res.status(200).send('register route')
+async function hello(req, res, next) {
+    try {
+        const user = req.user
+        res.status(200).json(user);
+
+    } catch(err) {
+        res.status(500).send({ err });
+    }
 
 } 
 
+function authenticateToken(req, res, next) {
+    console.log(req.headers)
+    const header = req.headers['authorization'];
+    if (header) {
+        const token = header.split(' ')[1];
 
-module.exports = {register, hello, login}
+        jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
+            if(err){
+                res.status(403).json({ err: 'Invalid token' })
+            } else {
+                // if token valid, continue to the route handler 
+                req.user = data;
+                next();
+            }
+        })
+    } else {
+        res.status(403).json({ err: 'Missing token' })
+    }
+}
+
+
+module.exports = {register, hello, login, authenticateToken}

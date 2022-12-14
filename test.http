@@ -3,7 +3,8 @@ GET {{host}} HTTP/1.1
 
 ###
 
-GET {{host}}/api/auth/register HTTP/1.1
+GET {{host}}/api/auth HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBwNDgiLCJlbWFpbCI6InBAZ21haWwuY29tIiwiaWF0IjoxNjcwNTEzMzA0fQ.gE1tMo7wfaZaMfA6NVTepfZ99fSv_GoZftiLqpseYYg
 
 ###
 
@@ -25,5 +26,5 @@ Accept: application/json
 
 {
     "username": "pp48",
-    "password": "12345"
+    "password": "123456"
 }
