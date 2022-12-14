@@ -27,7 +27,14 @@ async function register(req, res, next) {
         password:hashedPassword
     });
     delete user.password;
-    return res.status(201).json({status: true, user}) 
+
+    const payload = { username: user.username, email: user.email }
+
+    const accessToken = jwt.sign(payload, process.env.SECRET_KEY);
+    // console.log(user, accessToken)
+    return res.status(201).json({accessToken: accessToken, msg: "user created", status: true, user})
+
+    // return res.status(201).json({status: true, user}) 
 
     } catch(err) {
         next(err);
@@ -55,7 +62,7 @@ async function login(req, res, next) {
         const payload = { username: user.username, email: user.email }
 
         const accessToken = jwt.sign(payload, process.env.SECRET_KEY);
-        return res.status(200).json({accessToken: accessToken, msg: "user found", status: true})
+        return res.status(200).json({accessToken: accessToken, msg: "user found", status: true, user})
         // return res.status(200).json({msg: "user found", status: true, user})
     } else {
         return res.json({msg: "incorrect password for this user", status: false})
