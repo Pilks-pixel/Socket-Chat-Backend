@@ -6,5 +6,7 @@ router.post('/register', userControllers.register)
 
 router.post('/login', userControllers.login)
 
+router.put('/avatar', userControllers.update)
+
 router.get('/', userControllers.authenticateToken, userControllers.hello)
 module.exports = router

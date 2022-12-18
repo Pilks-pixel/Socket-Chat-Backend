@@ -5,11 +5,12 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const user = require('../models/user');
+const { findOneAndUpdate } = require('../models/user');
 const saltRounds = 10;
 
 async function register(req, res, next) {
     try {
-    console.log(req.body);
+    // console.log(req.body);
     const {username, email, password} = req.body;
     const usernameUniqueCheck = await User.findOne({username})   
     if (usernameUniqueCheck) {
@@ -74,6 +75,20 @@ async function login(req, res, next) {
     
 }
 
+async function update(req, res, next) {
+    try {
+        console.log(req.body)
+        const {avatar, id} = req.body
+        const setAvatarImage = await User.findOneAndUpdate({_id : id},{avatarImage : avatar})
+        const setIsAvatarImage = await User.findOneAndUpdate({_id : id},{isAvatarImageSet : true})
+        const user = setIsAvatarImage.toObject();
+        return res.status(200).json({msg: "user updated", status: true, user})
+
+    } catch (err) {
+        next(err)
+    }
+}
+
 async function hello(req, res, next) {
     try {
         const user = req.user
@@ -106,4 +121,4 @@ function authenticateToken(req, res, next) {
 }
 
 
-module.exports = {register, hello, login, authenticateToken}
+module.exports = {register, hello, login, authenticateToken, update}
