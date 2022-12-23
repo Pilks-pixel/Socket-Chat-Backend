@@ -79,9 +79,8 @@ async function update(req, res, next) {
     try {
         console.log(req.body)
         const {avatar, id} = req.body
-        const setAvatarImage = await User.findOneAndUpdate({_id : id},{avatarImage : avatar})
-        const setIsAvatarImage = await User.findOneAndUpdate({_id : id},{isAvatarImageSet : true})
-        const user = setIsAvatarImage.toObject();
+        const setAvatarImage = await User.findOneAndUpdate({_id : id},{avatarImage : avatar, isAvatarImageSet : true})
+        const user = setAvatarImage.toObject();
         return res.status(200).json({msg: "user updated", status: true, user})
 
     } catch (err) {
@@ -90,7 +89,7 @@ async function update(req, res, next) {
 }
 
 async function hello(req, res, next) {
-    try {
+    try {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
         const user = req.user
         res.status(200).json(user);
 
