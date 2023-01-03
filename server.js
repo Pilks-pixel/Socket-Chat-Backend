@@ -1,3 +1,4 @@
+"use strict";
 const app = require("express")();
 const cors = require("cors");
 const bodyParser = require('body-parser');
@@ -42,14 +43,19 @@ require('dotenv').config()
     });
 });
 */
+
 // API handling
 
 app.get('/', (req,res) => {
     res.status(200).send('Hello World')
 })
 
-const userRouting = require('./routes/userRoutes')
-app.use('/api/auth/', userRouting)
+const userRouting = require('./routes/userRoutes');
+app.use('/api/auth/', userRouting);
+
+const messageRouting = require('./routes/messageRoutes');
+app.use('/api/messages/', messageRouting);
+
 
 
 // DB connection 

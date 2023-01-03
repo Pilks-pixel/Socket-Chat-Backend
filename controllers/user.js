@@ -77,12 +77,24 @@ async function login(req, res, next) {
 
 async function update(req, res, next) {
     try {
-        console.log(req.body)
-        const {avatar, id} = req.body
+        // console.log(req.body, req.params)
+        const {avatar} = req.body
+        const {id} = req.params
         const setAvatarImage = await User.findOneAndUpdate({_id : id},{avatarImage : avatar, isAvatarImageSet : true})
         const user = setAvatarImage.toObject();
         return res.status(200).json({msg: "user updated", status: true, user})
 
+    } catch (err) {
+        next(err)
+    }
+}
+
+async function allUsers(req, res, next) {
+    try {
+        const currentUser = req.params.id
+        const getUsers = await User.find({_id: {$nin: [currentUser]}}).select('-password').sort({ username: 1 })
+        // console.log(getUsers)
+        return res.status(200).json(getUsers);
     } catch (err) {
         next(err)
     }
@@ -100,7 +112,6 @@ async function hello(req, res, next) {
 } 
 
 function authenticateToken(req, res, next) {
-    console.log(req.headers)
     const header = req.headers['authorization'];
     if (header) {
         const token = header.split(' ')[1];
@@ -120,4 +131,4 @@ function authenticateToken(req, res, next) {
 }
 
 
-module.exports = {register, hello, login, authenticateToken, update}
+module.exports = {register, hello, login, authenticateToken, update, allUsers}

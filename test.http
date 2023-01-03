@@ -28,3 +28,15 @@ Accept: application/json
     "username": "pp48",
     "password": "123456"
 }
+
+###
+
+POST {{host}}/api/messages/addmsg HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "from": "63871c24bc9c204c7700fa35",
+    "to": "639958839d88e8de97158410",
+    "message": "a test message"
+}

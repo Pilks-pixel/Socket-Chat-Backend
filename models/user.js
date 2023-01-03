@@ -33,7 +33,7 @@ const userSchema = new Schema({
         default:''
     },
 
-})
+});
 
 module.exports = mongoose.model('User', userSchema);
 
