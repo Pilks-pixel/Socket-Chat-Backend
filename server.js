@@ -42,11 +42,18 @@ io.on('connection', socket => {
     socket.on("send_message", (data) => {
         console.log(data)
         const user = onlineUsers.get(data.to);
+        const userId = data.from;
         console.log(user)
         if (user) {
-            console.log(socket.id)
+            console.log(socket.id);
+            onlineUsers.set(userId, socket.id);
             socket.to(user).emit("recieve_message", data);
-        }
+        } 
+    });
+
+    socket.on("remove_user", (userId) => {
+        onlineUsers.delete(userId);
+        console.log(onlineUsers.size)
     });
 
     socket.on("disconnect", socket => { // runs when client disconnects
