@@ -5,44 +5,55 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 app.use(cors());
 app.use(bodyParser.json());
-// const server = require("http").createServer(app); 
+require('dotenv').config();
 
-// const io = require("socket.io")(server, {
-//     cors: {
-//         origin: "http://localhost:3000",
-//         methods: ["GET", "POST"],
-//     },
-// });
+// Server
 
-require('dotenv').config()
+const port = process.env.PORT || 5000;
+const server = app.listen(port, () => console.log(`Express is running on port ${port}`));
+
+
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "http://localhost:3000",
+        credentials: true
+    },
+});
+
 
 // Socket connection
-/*
-/io.on('connection', socket => {
-    console.log(`Hello user connected ${socket.id}`) // runs when client first connects
+global.onlineUsers = new Map(); 
 
+io.on('connection', socket => {
+    console.log(`Hello user connected ${socket.id}`) // runs when client first connects
+    console.log(onlineUsers.size)
+    for (const i of onlineUsers.entries()) {
+        console.log(i)
+    }
     
-    socket.on("join_room", (data) => {
-        socket.join(data.roomNum);
-        socket.to(data.roomNum).emit("user_join_message", data);
-        console.log(`user ${socket.id} has joined ${data}`);
+
+    global.chatSocket = socket;
+
+    socket.on('add_user', (userId) => {
+        onlineUsers.set(userId, socket.id);
     });
 
-    // socket.on("show_writing", (data) => {
-    //     socket.to(data.message.roomNum).emit("making_message", data)
-    // });
 
     socket.on("send_message", (data) => {
         console.log(data)
-        socket.to(data.roomNum).emit("recieve_message", data)
+        const user = onlineUsers.get(data.to);
+        console.log(user)
+        if (user) {
+            console.log(socket.id)
+            socket.to(user).emit("recieve_message", data);
+        }
     });
 
     socket.on("disconnect", socket => { // runs when client disconnects
-        console.log(`Good Bye`, socket.id);
-        io.emit("disconnect_message", ` has left`);
+        console.log(`connection severed`, socket.id);
     });
 });
-*/
+
 
 // API handling
 
@@ -70,6 +81,4 @@ mongoose.connect(process.env.MONGO_URL, {
     console.log(err.message);
 });
    
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Express is running on port ${port}`))
 
