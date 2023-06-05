@@ -9,15 +9,15 @@ require("dotenv").config();
 
 // Server
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 const server = app.listen(port, () =>
 	console.log(`Express is running on port ${port}`)
 );
 
 const io = require("socket.io")(server, {
 	cors: {
-		// origin: "http://localhost:3000",
-		origin: "https://pilks-pixel-chat.netlify.app",
+		origin: "http://localhost:3000",
+		// origin: "https://pilks-pixel-chat.netlify.app",
 		credentials: true,
 	},
 });
@@ -69,7 +69,7 @@ const userRouting = require("./routes/userRoutes");
 app.use("/api/auth/", userRouting);
 
 const messageRouting = require("./routes/messageRoutes");
-app.use("/api/messages/", messageRouting);
+app.use("/api/", messageRouting);
 
 // DB connection
 
