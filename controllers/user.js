@@ -4,7 +4,6 @@ const router = express.Router();
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const user = require("../models/user");
 const { findOneAndUpdate } = require("../models/user");
 const saltRounds = 10;
 
@@ -87,6 +86,31 @@ async function login(req, res, next) {
 }
 
 // Read ,Update, Delete logic
+async function user(req, res, next) {
+    try {
+        const currentUser = req.params.id;
+        const getUser = await User.findOne({ _id: currentUser })
+            .select("-password");
+            console.log(getUser)
+        return res.status(200).json(getUser);
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function allUsers(req, res, next) {
+    try {
+        const currentUser = req.params.id;
+        const getUsers = await User.find({ _id: { $nin: [currentUser] } })
+            .select("-password")
+            .sort({ username: 1 });
+        // console.log(getUsers)
+        return res.status(200).json(getUsers);
+    } catch (err) {
+        next(err);
+    }
+}
+
 async function update(req, res, next) {
 	try {
 		const { avatar } = req.body;
@@ -97,19 +121,6 @@ async function update(req, res, next) {
 		);
 		const user = setAvatarImage.toObject();
 		return res.status(200).json({ msg: "user updated", status: true, user });
-	} catch (err) {
-		next(err);
-	}
-}
-
-async function allUsers(req, res, next) {
-	try {
-		const currentUser = req.params.id;
-		const getUsers = await User.find({ _id: { $nin: [currentUser] } })
-			.select("-password")
-			.sort({ username: 1 });
-		// console.log(getUsers)
-		return res.status(200).json(getUsers);
 	} catch (err) {
 		next(err);
 	}
@@ -160,6 +171,7 @@ module.exports = {
 	login,
 	authenticateToken,
 	update,
+    user,
 	allUsers,
     deleteUser
 };

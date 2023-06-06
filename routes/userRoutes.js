@@ -6,6 +6,8 @@ router.post('/register', userControllers.register)
 
 router.post('/login', userControllers.login)
 
+router.get('/contact/:id', userControllers.authenticateToken, userControllers.user)
+
 router.get('/contacts/:id', userControllers.authenticateToken, userControllers.allUsers)
 
 // /contact:id/update

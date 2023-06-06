@@ -31,7 +31,12 @@ Accept: application/json
 
 ###
 
-POST {{host}}/api/messages/addmsg HTTP/1.1
+GET {{host}}/api/auth/contact/639958839d88e8de97158410 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBwNDgiLCJlbWFpbCI6InBAZ21haWwuY29tIiwiaWF0IjoxNjcwNTEzMzA0fQ.gE1tMo7wfaZaMfA6NVTepfZ99fSv_GoZftiLqpseYYg
+
+###
+
+POST {{host}}/api/message/create HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
