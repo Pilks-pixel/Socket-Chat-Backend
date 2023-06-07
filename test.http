@@ -45,3 +45,7 @@ Accept: application/json
     "to": "639958839d88e8de97158410",
     "message": "a test message"
 }
+
+###
+
+DELETE {{host}}/api/message/64805fb441bbf88b008c13f4/delete HTTP/1.1

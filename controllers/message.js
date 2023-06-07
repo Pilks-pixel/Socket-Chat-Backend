@@ -46,14 +46,14 @@ async function allMessages(req, res, next) {
 
 async function deleteMessages(req, res, next) {
 	try {
-		const { user } = req.body;
+		const currentUser = req.params.id;
 		const { deletedCount } = await Message.deleteMany({
 			users: {
-				$in: [user],
+				$in: [currentUser],
 			},
 		});
 
-		return res.status(200).json(`${deletedCount} messages deleted for ${user}`);
+		return res.status(200).json(`${deletedCount} messages deleted for ${currentUser}`);
 	} catch (err) {
 		next(err);
 	}
