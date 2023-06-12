@@ -9,6 +9,10 @@ const messageSchema = new Schema(
 				required: true,
 			},
 		},
+        gifUrl: {
+            type: String,
+            default:''
+        },
 		users: Array,
 		sender: {
 			type: mongoose.Schema.Types.ObjectId,

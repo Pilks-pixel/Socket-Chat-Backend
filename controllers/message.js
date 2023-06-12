@@ -6,9 +6,10 @@ const Message = require("../models/message");
 async function addMessages(req, res, next) {
 	try {
 		console.log(req.body);
-		const { from, to, message, timeStamp } = req.body;
+		const { from, to, message, gif, timeStamp } = req.body;
 		const data = await Message.create({
 			message: { text: message },
+			gifUrl: gif,
 			users: [from, to],
 			sender: from,
 			time: timeStamp,
@@ -35,6 +36,7 @@ async function allMessages(req, res, next) {
 			return {
 				fromSender: msg.sender.toString() === from,
 				message: msg.message.text,
+				gif: msg.gifUrl,
 				timeStamp: msg.time,
 			};
 		});
