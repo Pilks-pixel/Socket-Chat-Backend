@@ -13,6 +13,16 @@ const messageSchema = new Schema(
             type: String,
             default:''
         },
+        emoji: {
+            liked: {
+                type: Boolean,
+                default: false
+            },
+            laughed: {
+                type: Boolean,
+                default: false
+            },
+        },
 		users: Array,
 		sender: {
 			type: mongoose.Schema.Types.ObjectId,

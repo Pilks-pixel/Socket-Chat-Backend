@@ -35,8 +35,11 @@ async function allMessages(req, res, next) {
 		const showMessages = getMessages.map(msg => {
 			return {
 				fromSender: msg.sender.toString() === from,
+				messageId: msg._id,
 				message: msg.message.text,
 				gif: msg.gifUrl,
+				likeStatus: msg.emoji.liked,
+				laughStatus: msg.emoji.laughed,
 				timeStamp: msg.time,
 			};
 		});
@@ -46,19 +49,33 @@ async function allMessages(req, res, next) {
 	}
 }
 
-async function deleteMessages(req, res, next) {
-	try {
-		const currentUser = req.params.id;
-		const { deletedCount } = await Message.deleteMany({
-			users: {
-				$in: [currentUser],
-			},
-		});
-
-		return res.status(200).json(`${deletedCount} messages deleted for ${currentUser}`);
-	} catch (err) {
-		next(err);
-	}
+	async function updateMessage(req, res, next) {
+		try {
+			console.log(req.body);
+			const {messageId, likeStatus, laughStatus} = req.body;
+			const data = await Message.findOneAndUpdate({_id: messageId}, {emoji : {liked: likeStatus, laughed: laughStatus}});
+			if (!data) {
+				throw new Error("message failed to update: could not like or laugh at message");
+			}
+		return res.status(201).json(data);
+		} catch (err) {
+			next(err);
+		}
 }
 
-module.exports = { addMessages, allMessages, deleteMessages };
+	async function deleteMessages(req, res, next) {
+		try {
+			const currentUser = req.params.id;
+			const { deletedCount } = await Message.deleteMany({
+				users: {
+					$in: [currentUser],
+				},
+			});
+
+			return res.status(200).json(`${deletedCount} messages deleted for ${currentUser}`);
+		} catch (err) {
+			next(err);
+		}
+}
+
+module.exports = { addMessages, allMessages, updateMessage, deleteMessages };
