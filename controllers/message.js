@@ -52,12 +52,13 @@ async function allMessages(req, res, next) {
 	async function updateMessage(req, res, next) {
 		try {
 			console.log(req.body);
-			const {messageId, likeStatus, laughStatus} = req.body;
+			const messageId = req.params.id;
+			const {likeStatus, laughStatus} = req.body;
 			const data = await Message.findOneAndUpdate({_id: messageId}, {emoji : {liked: likeStatus, laughed: laughStatus}});
 			if (!data) {
 				throw new Error("message failed to update: could not like or laugh at message");
 			}
-		return res.status(201).json(data);
+		return res.status(201).json(`Emoji at message ${data._id} updated`);
 		} catch (err) {
 			next(err);
 		}
