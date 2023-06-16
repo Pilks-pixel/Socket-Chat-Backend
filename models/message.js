@@ -32,6 +32,10 @@ const messageSchema = new Schema(
 		time: {
 			type: String,
 		},
+		secondaryId: {
+            type: String,
+            required: true,
+        },
 	},
 	{
 		timestamps: true,

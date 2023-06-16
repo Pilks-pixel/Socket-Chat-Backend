@@ -48,6 +48,16 @@ io.on("connection", socket => {
 		}
 	});
 
+	socket.on("update_message", data => {
+		console.log(data);
+		const user = onlineUsers.get(data.to);
+		const userId = data.from;
+		if (user) {
+			onlineUsers.set(userId, socket.id);
+			socket.to(user).emit("receive_message_update", data);
+		}
+	});
+
 	socket.on("remove_user", userId => {
 		onlineUsers.delete(userId);
 		console.log(onlineUsers.size);

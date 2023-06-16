@@ -6,13 +6,15 @@ const Message = require("../models/message");
 async function addMessages(req, res, next) {
 	try {
 		console.log(req.body);
-		const { from, to, message, gif, timeStamp } = req.body;
+		const { from, to, message, gif, timeStamp , secondaryId, likeStatus, laughStatus} = req.body;
 		const data = await Message.create({
 			message: { text: message },
 			gifUrl: gif,
+			emoji: {liked: likeStatus, laughed: laughStatus},
 			users: [from, to],
 			sender: from,
 			time: timeStamp,
+			secondaryId: secondaryId
 		});
 		if (!data) {
 			throw new Error("message failed to send: could not create message");
@@ -30,12 +32,12 @@ async function allMessages(req, res, next) {
 			users: {
 				$all: [from, to],
 			},
-		}).sort({ updatedAt: 1 });
+		}).sort({ createdAt: 1 });
 
 		const showMessages = getMessages.map(msg => {
 			return {
 				fromSender: msg.sender.toString() === from,
-				messageId: msg._id,
+				messageId: msg.secondaryId,
 				message: msg.message.text,
 				gif: msg.gifUrl,
 				likeStatus: msg.emoji.liked,
@@ -54,11 +56,11 @@ async function allMessages(req, res, next) {
 			console.log(req.body);
 			const messageId = req.params.id;
 			const {likeStatus, laughStatus} = req.body;
-			const data = await Message.findOneAndUpdate({_id: messageId}, {emoji : {liked: likeStatus, laughed: laughStatus}});
+			const data = await Message.findOneAndUpdate({secondaryId: messageId}, {emoji : {liked: likeStatus, laughed: laughStatus}});
 			if (!data) {
 				throw new Error("message failed to update: could not like or laugh at message");
 			}
-		return res.status(201).json(`Emoji at message ${data._id} updated`);
+		return res.status(201).json(`Emoji at message ${data.secondaryId} updated`);
 		} catch (err) {
 			next(err);
 		}
