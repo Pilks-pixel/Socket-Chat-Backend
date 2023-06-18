@@ -1,4 +1,4 @@
-@host = http://localhost:5000
+@host = http://localhost:8080
 GET {{host}} HTTP/1.1
 
 ###
@@ -31,7 +31,12 @@ Accept: application/json
 
 ###
 
-POST {{host}}/api/messages/addmsg HTTP/1.1
+GET {{host}}/api/auth/contact/639958839d88e8de97158410 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBwNDgiLCJlbWFpbCI6InBAZ21haWwuY29tIiwiaWF0IjoxNjcwNTEzMzA0fQ.gE1tMo7wfaZaMfA6NVTepfZ99fSv_GoZftiLqpseYYg
+
+###
+
+POST {{host}}/api/message/create HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
@@ -40,3 +45,17 @@ Accept: application/json
     "to": "639958839d88e8de97158410",
     "message": "a test message"
 }
+
+###
+PUT {{host}}/api/message/648a878359641ebd133aec65/update HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "likeStatus": true,
+    "laughStatus": true
+}
+
+###
+
+DELETE {{host}}/api/message/64805fb441bbf88b008c13f4/delete HTTP/1.1
