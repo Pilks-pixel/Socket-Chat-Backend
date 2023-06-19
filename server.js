@@ -16,8 +16,8 @@ const server = app.listen(port, () =>
 
 const io = require("socket.io")(server, {
 	cors: {
-		origin: "http://localhost:3000",
-		// origin: "https://pilks-pixel-chat.netlify.app",
+		// origin: "http://localhost:3000",
+		origin: "https://pilks-pixel-chat.netlify.app",
 		credentials: true,
 	},
 });
