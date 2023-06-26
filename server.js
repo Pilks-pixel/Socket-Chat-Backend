@@ -8,7 +8,6 @@ app.use(bodyParser.json());
 require("dotenv").config();
 
 // Server
-
 const port = process.env.PORT || 8080;
 const server = app.listen(port, () =>
 	console.log(`Express is running on port ${port}`)
@@ -16,8 +15,8 @@ const server = app.listen(port, () =>
 
 const io = require("socket.io")(server, {
 	cors: {
-		origin: "http://localhost:3000",
-		// origin: "https://pilks-pixel-chat.netlify.app",
+		// origin: "http://localhost:3000",
+		origin: "https://pilks-pixel-chat.netlify.app",
 		credentials: true,
 	},
 });
@@ -70,7 +69,7 @@ io.on("connection", socket => {
 });
 
 // API handling
-
+10
 app.get("/", (req, res) => {
 	res.status(200).send("Hello World");
 });
