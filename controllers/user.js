@@ -48,7 +48,6 @@ async function register(req, res, next) {
 
 async function login(req, res, next) {
 	try {
-		// console.log(req.body);
 		const { username, password } = req.body;
 		const userQuery = await User.findOne({ username });
 
@@ -57,7 +56,6 @@ async function login(req, res, next) {
 		}
 
 		const authed = await bcrypt.compare(password, userQuery.password);
-		// console.log(authed, userQuery);
 
 		if (authed) {
 			let user = userQuery.toObject();
@@ -104,7 +102,6 @@ async function allUsers(req, res, next) {
         const getUsers = await User.find({ _id: { $nin: [currentUser] } })
             .select("-password")
             .sort({ username: 1 });
-        // console.log(getUsers)
         return res.status(200).json(getUsers);
     } catch (err) {
         next(err);

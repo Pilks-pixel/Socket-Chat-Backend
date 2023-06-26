@@ -53,7 +53,6 @@ async function allMessages(req, res, next) {
 
 	async function updateMessage(req, res, next) {
 		try {
-			console.log(req.body);
 			const messageId = req.params.id;
 			const {likeStatus, laughStatus} = req.body;
 			const data = await Message.findOneAndUpdate({secondaryId: messageId}, {emoji : {liked: likeStatus, laughed: laughStatus}});
