@@ -69,7 +69,6 @@ io.on("connection", socket => {
 });
 
 // API handling
-10
 app.get("/", (req, res) => {
 	res.status(200).send("Hello World");
 });
