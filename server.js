@@ -38,7 +38,6 @@ io.on("connection", socket => {
 	});
 
 	socket.on("send_message", data => {
-		console.log(data);
 		const user = onlineUsers.get(data.to);
 		const userId = data.from;
 		if (user) {

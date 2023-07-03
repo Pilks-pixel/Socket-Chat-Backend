@@ -5,7 +5,6 @@ const Message = require("../models/message");
 
 async function addMessages(req, res, next) {
 	try {
-		console.log(req.body);
 		const { from, to, message, gif, timeStamp , secondaryId, likeStatus, laughStatus} = req.body;
 		const data = await Message.create({
 			message: { text: message },
