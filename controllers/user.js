@@ -10,7 +10,6 @@ const saltRounds = 10;
 // Create user & login logic
 async function register(req, res, next) {
 	try {
-		// console.log(req.body);
 		const { username, email, password } = req.body;
 		const usernameUniqueCheck = await User.findOne({ username });
 		if (usernameUniqueCheck) {
@@ -31,7 +30,6 @@ async function register(req, res, next) {
 		const payload = { username: user.username, email: user.email };
 
 		const accessToken = jwt.sign(payload, process.env.SECRET_KEY);
-		// console.log(user, accessToken)
 		return res
 			.status(201)
 			.json({
