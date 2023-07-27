@@ -10,8 +10,14 @@ const messageSchema = new Schema(
 			},
 		},
         gifUrl: {
-            type: String,
-            default:''
+			image: {
+				type: String,
+				default:''
+			},
+			title: {
+				type: String,
+				default:''
+			}
         },
         emoji: {
             liked: {
