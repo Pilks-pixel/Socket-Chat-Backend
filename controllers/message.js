@@ -1,4 +1,4 @@
-const { json } = require("body-parser");
+const { json, urlencoded } = require("body-parser");
 const express = require("express");
 const router = express.Router();
 const Message = require("../models/message");
@@ -8,7 +8,7 @@ async function addMessages(req, res, next) {
 		const { from, to, message, gif, timeStamp , secondaryId, likeStatus, laughStatus} = req.body;
 		const data = await Message.create({
 			message: { text: message },
-			gifUrl: gif,
+			gifUrl: {image: gif.image , title: gif.title },
 			emoji: {liked: likeStatus, laughed: laughStatus},
 			users: [from, to],
 			sender: from,
